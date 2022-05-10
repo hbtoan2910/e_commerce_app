@@ -1,15 +1,21 @@
-const express = require('express');
-const http = require('http');
-const mongoose = require('mongoose');
+const express = require('express')
+const http = require('http')
+const mongoose = require('mongoose')
 
-const port = process.env.port || 5000;
-const host = 'localhost';
+const connectDb = require('./config/DatabaseConnection/db')
 
-const app = express();
-const server = http.createServer((req, res) => {
-    res.send("This is homepage");
-});
+const port = process.env.PORT || 5000
+const host = 'localhost'
 
-app.listen(port, host, () => {
+
+const app = express()
+
+app.get('/', (req, res) => {
+    res.send('This is home page')
+})
+
+connectDb();
+
+const server = app.listen(port, host, () => {
     console.log(`This server is listenning on http://${host}:${port} for connections...`)
-});
+})
