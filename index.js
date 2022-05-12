@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 app.use(express.json()); //MUST HAVE to handle JSON in req body
 
 app.use('/user', UserRouter);
+//app.use('/product', ProductRouter);
 
 connectDb();
 

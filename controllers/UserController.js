@@ -1,5 +1,5 @@
 const UserModel = require("../models/UserModel");
-const generateToken = require("../config/utils/util");
+const { generateToken } = require("../config/utils/util");
 
 const registerUser = async (req, res) => {
   const user = new UserModel({
@@ -21,7 +21,8 @@ const getAllUser = async (req, res) => {
 
 const login = async (req, res) => {
   //if filter (of findOne) is {email: xxx, password: yyy}, it only checks email, not password
-  const user = await UserModel.findOne({
+  //Method 1: use tradition if/else to solve this
+  /*   const user = await UserModel.findOne({
     email: req.body.email,
   });
   if (user) {
@@ -38,6 +39,23 @@ const login = async (req, res) => {
     } else {
       res.status(401).send({ message: "Invalid email or password." });
     }
+  } else {
+    res.status(401).send({ message: "Invalid email or password." });
+  } */
+  //Method 2: use operator $and in filter
+  const user = await UserModel.findOne({
+    $and: [{ email: req.body.email }, { password: req.body.password }],
+  });
+  if (user) {
+    res.send({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      address: user.address,
+      phone: user.phone,
+      token: generateToken(user),
+    });
   } else {
     res.status(401).send({ message: "Invalid email or password." });
   }
