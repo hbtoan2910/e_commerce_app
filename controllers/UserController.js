@@ -1,6 +1,11 @@
 const UserModel = require("../models/UserModel");
 const { generateToken } = require("../config/utils/util");
 
+const getAllUser = async (req, res) => {
+  const result = await UserModel.find();
+  res.send(result);
+};
+
 const registerUser = async (req, res) => {
   const user = new UserModel({
     name: req.body.name,
@@ -14,10 +19,7 @@ const registerUser = async (req, res) => {
   res.send(result);
 };
 
-const getAllUser = async (req, res) => {
-  const result = await UserModel.find();
-  res.send(result);
-};
+
 
 const login = async (req, res) => {
   //if filter (of findOne) is {email: xxx, password: yyy}, it only checks email, not password
@@ -98,9 +100,9 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
+  getAllUser,
   registerUser,
   login,
-  getAllUser,
   updateUser,
   deleteUser,
 };
